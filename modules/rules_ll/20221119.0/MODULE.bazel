@@ -1,0 +1,71 @@
+module(
+    name = "rules_ll",
+    version = "20221119.0",
+    compatibility_level = 0,
+)
+
+register_execution_platforms("@rules_ll//ll:ll_linux_exec_platform")
+register_toolchains("@rules_ll//ll:ll_toolchain")
+
+# Platform support.
+bazel_dep(name = "platforms", version = "0.0.4")
+
+# Various utility functions. Mostly used for easier path manipulations.
+bazel_dep(name = "bazel_skylib", version = "1.2.0")
+
+# Documentation.
+bazel_dep(name = "stardoc", version = "0.5.0")
+
+# hipSYCL. In development.
+# bazel_dep(name = "hipsycl", version = "0.9.3")
+
+# Build Clang/LLVM with zlib support.
+bazel_dep(name = "zlib", version = "1.2.13")
+
+bazel_dep(name = "llvm-project-overlay", version = "16.0.0-bcr.0")
+
+# Configure the llvm-project Bazel overlay.
+llvm_project_overlay = use_extension(
+    "@llvm-project-overlay//utils/bazel:extensions.bzl",
+    "llvm_project_overlay",
+)
+llvm_project_overlay.configure(
+    commit = "ff111a997f1b40a531bc68b543542746d4b08a5f",
+    sha256 = "8c7caf62bd4c5f38f9cdff6732fa619a4c4cc91252ba3facc85f00d8c651f893",
+    targets = ["AMDGPU", "NVPTX", "X86"],
+    patches = [
+        "@rules_ll//patches:back_inserter_patch.diff",
+        "@rules_ll//patches:synth_three_way_patch.diff",
+        "@rules_ll//patches:compiler-rt_float128_patch.diff",
+        "@rules_ll//patches:mallinfo2_patch.diff",
+        "@rules_ll//patches:rules_ll_compatibility_patch.diff",
+        "@rules_ll//patches:rules_ll_overlay_patch.diff",
+        "@rules_ll//patches:clang_new_offload_driver.diff",
+    ],
+)
+
+use_repo(
+    llvm_project_overlay,
+    "llvm-project",
+    "llvm-raw",
+)
+
+# Set up dependencies for rules_ll.
+rules_ll_dependencies = use_extension(
+    "@rules_ll//ll:init.bzl",
+    "rules_ll_dependencies",
+)
+rules_ll_dependencies.configure(
+    local_library_path = "autodetect",
+)
+use_repo(
+    rules_ll_dependencies,
+    "local_library_path",
+    "hip",
+    "hipamd",
+    "cuda_cudart",
+    "cuda_nvcc",
+    "cuda_nvprof",
+    "cuda_profiler_api",
+    "libcurand",
+)

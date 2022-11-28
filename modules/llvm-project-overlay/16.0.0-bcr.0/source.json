@@ -1,0 +1,13 @@
+{
+    "integrity": "sha256-wncSBn0Addpi+AsVatuj3zZj0Q6wC6bZ3arNaD8ZCM8=",
+    "patch_strip": 1,
+    "patches": {
+        "bzlmod_compatibility_patch.patch": "sha256-CL0kyUatr6uhkXnACh1c1FFCJMDCE7IX6duOrcuZHCg=",
+        "00_make_labels_explicit.patch": "sha256-mSqAQxUFUJuqRb3Z70Cn5zvad1d17bYXOadaZ9FvEPY=",
+        "01_dynamically_determine_workspace_root.patch": "sha256-ojOw/kbnspA0b+uvlZr1FYLck/VmiN/ThMhBGr0G6Vs=",
+        "02_add_bzlmod_support.patch": "sha256-A2Zi8hPLELhcTffA/yYBI6Ok6eAu4Bunt/TnyCMtlG0=",
+        "03_bzlmod_custom_commit_example.patch": "sha256-0xgdXffiDxn3XbNREcG6Dc/Z8/gI4MTD04qC9PTeckI="
+    },
+    "strip_prefix": "llvm-project-7fbab6a580c34c595beac7c813e412d1b6d6ead7",
+    "url": "https://github.com/llvm/llvm-project/archive/7fbab6a580c34c595beac7c813e412d1b6d6ead7.zip"
+}

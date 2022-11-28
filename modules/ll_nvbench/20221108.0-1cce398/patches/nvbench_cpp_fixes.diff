@@ -1,0 +1,222 @@
+diff --git a/nvbench/detail/l2flush.cuh b/nvbench/detail/l2flush.cuh
+index aefbfef..3b513fb 100644
+--- a/nvbench/detail/l2flush.cuh
++++ b/nvbench/detail/l2flush.cuh
+@@ -18,10 +18,10 @@
+ 
+ #pragma once
+ 
+-#include <nvbench/cuda_call.cuh>
+-
+ #include <cuda_runtime_api.h>
+ 
++#include <nvbench/cuda_call.cuh>
++
+ namespace nvbench::detail
+ {
+ 
+@@ -35,7 +35,7 @@ struct l2flush
+     if (m_l2_size > 0)
+     {
+       void *buffer = m_l2_buffer;
+-      NVBENCH_CUDA_CALL(cudaMalloc(&buffer, m_l2_size));
++      NVBENCH_CUDA_CALL(cudaMalloc(&buffer, static_cast<size_t>(m_l2_size)));
+       m_l2_buffer = reinterpret_cast<int *>(buffer);
+     }
+   }
+@@ -52,7 +52,7 @@ struct l2flush
+   {
+     if (m_l2_size > 0)
+     {
+-      NVBENCH_CUDA_CALL(cudaMemsetAsync(m_l2_buffer, 0, m_l2_size, stream));
++      NVBENCH_CUDA_CALL(cudaMemsetAsync(m_l2_buffer, 0, static_cast<size_t>(m_l2_size), stream));
+     }
+   }
+ 
+diff --git a/nvbench/device_info.cuh b/nvbench/device_info.cuh
+index f0694df..52b7733 100644
+--- a/nvbench/device_info.cuh
++++ b/nvbench/device_info.cuh
+@@ -18,17 +18,18 @@
+ 
+ #pragma once
+ 
++#include <cuda_runtime_api.h>
++
+ #include <nvbench/config.cuh>
+ #include <nvbench/cuda_call.cuh>
+ #include <nvbench/detail/device_scope.cuh>
+ 
+-#include <cuda_runtime_api.h>
+-
+ #include <cstdint> // CHAR_BIT
+ #include <stdexcept>
+-#include <string_view>
+ #include <utility>
+ 
++#include <string_view>
++
+ // forward declare this for internal storage
+ struct nvmlDevice_st;
+ 
+@@ -154,7 +155,7 @@ struct device_info
+   [[nodiscard]] std::size_t get_global_memory_bus_bandwidth() const
+   { // 2 is for DDR, CHAR_BITS to convert bus_width to bytes.
+     return 2 * this->get_global_memory_bus_peak_clock_rate() *
+-           (this->get_global_memory_bus_width() / CHAR_BIT);
++           (static_cast<size_t>(this->get_global_memory_bus_width()) / CHAR_BIT);
+   }
+ 
+   /// @return The size of the L2 cache in bytes.
+diff --git a/nvbench/device_manager.cuh b/nvbench/device_manager.cuh
+index 8e6fe9d..b8391e6 100644
+--- a/nvbench/device_manager.cuh
++++ b/nvbench/device_manager.cuh
+@@ -54,7 +54,7 @@ struct device_manager
+   /**
+    * @return The device_info object corresponding to `id`.
+    */
+-  [[nodiscard]] const nvbench::device_info &get_device(int id) { return m_devices.at(id); }
++  [[nodiscard]] const nvbench::device_info &get_device(size_t id) { return m_devices.at(id); }
+ 
+   /**
+    * @return A vector containing device_info objects for all detected CUDA
+diff --git a/nvbench/int64_axis.cuh b/nvbench/int64_axis.cuh
+index baa7641..89df3b8 100644
+--- a/nvbench/int64_axis.cuh
++++ b/nvbench/int64_axis.cuh
+@@ -19,7 +19,6 @@
+ #pragma once
+ 
+ #include <nvbench/axis_base.cuh>
+-
+ #include <nvbench/flags.cuh>
+ #include <nvbench/types.cuh>
+ 
+@@ -69,13 +68,13 @@ struct int64_axis final : public axis_base
+   int64_axis_flags get_flags() const { return m_flags; }
+ 
+   // Helper functions for pow2 conversions:
+-  static nvbench::int64_t compute_pow2(nvbench::int64_t exponent) { return 1ll << exponent; }
++  static nvbench::int64_t compute_pow2(nvbench::int64_t exponent) { return 1l << exponent; }
+ 
+   // UB if value < 0.
+   static nvbench::int64_t compute_log2(nvbench::int64_t value)
+   {
+     // TODO use <bit> functions in C++20?
+-    nvbench::uint64_t bits    = static_cast<nvbench::int64_t>(value);
++    auto bits                 = static_cast<nvbench::uint64_t>(value);
+     nvbench::int64_t exponent = 0;
+     while ((bits >>= 1) != 0ull)
+     {
+diff --git a/nvbench/json_printer.cu b/nvbench/json_printer.cu
+index b78e5be..5be89d5 100644
+--- a/nvbench/json_printer.cu
++++ b/nvbench/json_printer.cu
+@@ -16,24 +16,18 @@
+  *  limitations under the License.
+  */
+ 
+-#include <nvbench/json_printer.cuh>
+-
+ #include <nvbench/axes_metadata.cuh>
+ #include <nvbench/benchmark_base.cuh>
+ #include <nvbench/config.cuh>
++#include <nvbench/detail/throw.cuh>
+ #include <nvbench/device_info.cuh>
+ #include <nvbench/device_manager.cuh>
+ #include <nvbench/git_revision.cuh>
++#include <nvbench/json_printer.cuh>
+ #include <nvbench/state.cuh>
+ #include <nvbench/summary.cuh>
+ #include <nvbench/version.cuh>
+ 
+-#include <nvbench/detail/throw.cuh>
+-
+-#include <fmt/format.h>
+-
+-#include <nlohmann/json.hpp>
+-
+ #include <cstdint>
+ #include <fstream>
+ #include <iterator>
+@@ -43,7 +37,10 @@
+ #include <utility>
+ #include <vector>
+ 
+-#ifdef __GNUC__
++#include <fmt/format.h>
++#include <nlohmann/json.hpp>
++
++#if defined __GNUC__ && !defined __clang__
+ #include <experimental/filesystem>
+ #else
+ #include <filesystem>
+@@ -140,7 +137,7 @@ void json_printer::do_process_bulk_data_float64(state &state,
+ 
+   if (hint == "sample_times")
+   {
+-#ifdef __GNUC__
++#if defined __GNUC__ && !defined __clang__
+     namespace fs = std::experimental::filesystem;
+ #else
+     namespace fs = std::filesystem;
+diff --git a/nvbench/launch.cuh b/nvbench/launch.cuh
+index 0cb4961..c45f1fd 100644
+--- a/nvbench/launch.cuh
++++ b/nvbench/launch.cuh
+@@ -45,7 +45,7 @@ struct launch
+   launch(const launch &)            = delete;
+   launch(launch &&)                 = default;
+   launch &operator=(const launch &) = delete;
+-  launch &operator=(launch &&)      = default;
++  launch &operator=(launch &&)      = delete;
+ 
+   /**
+    * @return a CUDA stream that all kernels and other stream-ordered CUDA work
+diff --git a/nvbench/printer_base.cuh b/nvbench/printer_base.cuh
+index 3de8874..93a9914 100644
+--- a/nvbench/printer_base.cuh
++++ b/nvbench/printer_base.cuh
+@@ -79,7 +79,7 @@ struct printer_base
+   printer_base(const printer_base &)            = delete;
+   printer_base(printer_base &&)                 = default;
+   printer_base &operator=(const printer_base &) = delete;
+-  printer_base &operator=(printer_base &&)      = default;
++  printer_base &operator=(printer_base &&)      = delete;
+ 
+   /*!
+    * Called once with the command line arguments used to invoke the current
+diff --git a/nvbench/type_axis.cxx b/nvbench/type_axis.cxx
+index e678ff9..aac6cb7 100644
+--- a/nvbench/type_axis.cxx
++++ b/nvbench/type_axis.cxx
+@@ -16,16 +16,15 @@
+  *  limitations under the License.
+  */
+ 
++#include <nvbench/detail/throw.cuh>
+ #include <nvbench/type_axis.cuh>
+ 
+-#include <nvbench/detail/throw.cuh>
++#include <algorithm>
++#include <stdexcept>
+ 
+ #include <fmt/format.h>
+ #include <fmt/ranges.h>
+ 
+-#include <algorithm>
+-#include <stdexcept>
+-
+ namespace nvbench
+ {
+ 
+@@ -67,7 +66,7 @@ std::size_t type_axis::get_type_index(const std::string &input_string) const
+                   m_input_strings);
+   }
+ 
+-  return it - m_input_strings.cbegin();
++  return static_cast<size_t>(it - m_input_strings.cbegin());
+ }
+ 
+ } // namespace nvbench

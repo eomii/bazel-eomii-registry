@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/NVIDIA/libcudacxx",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "20221122.0-e2d7c47"
+    ],
+    "yanked_versions": {}
+}

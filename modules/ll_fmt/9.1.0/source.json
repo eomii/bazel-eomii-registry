@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-XepI0fzdw+xXHOIFjhORCg1Ka6tMwJqAnYsd0ciK5vI=",
+    "patch_strip": 1,
+    "patches": {
+        "fmt_bzlmod_compatibility_patch.diff": "sha256-SD6a4Z2ZplrYOJVvDQhI6UkMHunU6HvS3D3L6wrC9Pk="
+    },
+    "strip_prefix": "fmt-9.1.0",
+    "url": "https://github.com/fmtlib/fmt/archive/refs/tags/9.1.0.tar.gz"
+}

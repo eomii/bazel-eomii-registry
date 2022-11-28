@@ -1,0 +1,90 @@
+diff --git a/utils/bazel/configure.bzl b/utils/bazel/configure.bzl
+index 6fca2060491f..71e6c8ecaa0e 100644
+--- a/utils/bazel/configure.bzl
++++ b/utils/bazel/configure.bzl
+@@ -33,7 +33,7 @@ DEFAULT_TARGETS = [
+ ]
+ 
+ def _overlay_directories(repository_ctx):
+-    src_path = repository_ctx.path(Label("//:WORKSPACE")).dirname
++    src_path = repository_ctx.path(Label("@llvm-raw//:WORKSPACE")).dirname
+     bazel_path = src_path.get_child("utils").get_child("bazel")
+     overlay_path = bazel_path.get_child("llvm-project-overlay")
+     script_path = bazel_path.get_child("overlay_directories.py")
+diff --git a/utils/bazel/terminfo.bzl b/utils/bazel/terminfo.bzl
+index 70281e111965..10c7f6e3640b 100644
+--- a/utils/bazel/terminfo.bzl
++++ b/utils/bazel/terminfo.bzl
+@@ -27,7 +27,7 @@ def _llvm_terminfo_disable_impl(repository_ctx):
+ 
+ _terminfo_disable_attrs = {
+     "_disable_build_template": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_disable.BUILD"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_disable.BUILD",
+         allow_single_file = True,
+     ),
+ }
+@@ -148,11 +148,11 @@ def _merge_attrs(attrs_list):
+ 
+ _terminfo_system_attrs = _merge_attrs([_terminfo_disable_attrs, {
+     "_system_build_template": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_system.BUILD"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_system.BUILD",
+         allow_single_file = True,
+     ),
+     "_terminfo_test_source": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_test.c"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_test.c",
+         allow_single_file = True,
+     ),
+     "candidate_system_linkopts": attr.string_list(
+diff --git a/utils/bazel/zlib.bzl b/utils/bazel/zlib.bzl
+index 18f8a0023481..18b3936690fa 100644
+--- a/utils/bazel/zlib.bzl
++++ b/utils/bazel/zlib.bzl
+@@ -33,7 +33,7 @@ llvm_zlib_external = repository_rule(
+     implementation = _llvm_zlib_external_impl,
+     attrs = {
+         "_external_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_external.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_external.BUILD",
+             allow_single_file = True,
+         ),
+         "external_zlib": attr.string(
+@@ -56,7 +56,7 @@ llvm_zlib_system = repository_rule(
+     implementation = _llvm_zlib_system_impl,
+     attrs = {
+         "_system_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_system.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_system.BUILD",
+             allow_single_file = True,
+         ),
+     },
+@@ -73,7 +73,7 @@ llvm_zlib_disable = repository_rule(
+     implementation = _llvm_zlib_disable_impl,
+     attrs = {
+         "_disable_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_disable.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_disable.BUILD",
+             allow_single_file = True,
+         ),
+     },
+@@ -92,15 +92,15 @@ llvm_zlib_from_env = repository_rule(
+     implementation = _llvm_zlib_from_env_impl,
+     attrs = {
+         "_disable_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_disable.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_disable.BUILD",
+             allow_single_file = True,
+         ),
+         "_external_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_external.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_external.BUILD",
+             allow_single_file = True,
+         ),
+         "_system_build_template": attr.label(
+-            default = Label("//utils/bazel/deps_impl:zlib_system.BUILD"),
++            default = "@llvm-raw//utils/bazel/deps_impl:zlib_system.BUILD",
+             allow_single_file = True,
+         ),
+         "external_zlib": attr.label(

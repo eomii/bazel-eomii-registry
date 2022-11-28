@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/NVIDIA/nvbench",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "20221108.0-1cce398"
+    ],
+    "yanked_versions": {}
+}

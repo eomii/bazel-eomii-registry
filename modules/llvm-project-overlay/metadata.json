@@ -1,0 +1,14 @@
+{
+    "homepage": "https://github.com/llvm/llvm-project",
+    "maintainers": [
+        {
+            "email": "aaron@eomii.org",
+            "github": "aaronmondal",
+            "name": "Aaron Siddhartha Mondal"
+        }
+    ],
+    "versions": [
+        "16.0.0-bcr.0"
+    ],
+    "yanked_versions": {}
+}

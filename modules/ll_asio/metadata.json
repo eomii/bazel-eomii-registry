@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/chriskohlhoff/asio",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "1.24.0"
+    ],
+    "yanked_versions": {}
+}

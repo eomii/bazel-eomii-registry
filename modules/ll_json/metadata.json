@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/nlohmann/json",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "3.11.2"
+    ],
+    "yanked_versions": {}
+}

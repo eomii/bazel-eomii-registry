@@ -1,0 +1,33 @@
+diff --git a/BUILD.bazel b/BUILD.bazel
+new file mode 100644
+index 00000000..154ea396
+--- /dev/null
++++ b/BUILD.bazel
+@@ -0,0 +1,8 @@
++load("@rules_ll//ll:defs.bzl", "ll_library")
++
++ll_library(
++    name = "libcudacxx",
++    exposed_hdrs = glob(["include/**"]),
++    exposed_relative_angled_includes = ["include"],
++    visibility = ["//visibility:public"],
++)
+diff --git a/MODULE.bazel b/MODULE.bazel
+new file mode 100644
+index 00000000..ba17ee66
+--- /dev/null
++++ b/MODULE.bazel
+@@ -0,0 +1,6 @@
++module(
++    name = "ll_libcudacxx",
++    version = "20221122.0-e2d7c47",
++)
++
++bazel_dep(name="rules_ll", version="20221119.0")
+diff --git a/WORKSPACE.bazel b/WORKSPACE.bazel
+new file mode 100644
+index 00000000..996cee9a
+--- /dev/null
++++ b/WORKSPACE.bazel
+@@ -0,0 +1 @@
++# Empty.

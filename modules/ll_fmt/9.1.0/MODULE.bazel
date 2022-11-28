@@ -1,0 +1,7 @@
+module(
+    name = "ll_fmt",
+    version = "9.1.0",
+    compatibility_level = 9,
+)
+
+bazel_dep(name="rules_ll", version="20221119.0")

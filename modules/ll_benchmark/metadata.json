@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/google/benchmark",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "1.7.1"
+    ],
+    "yanked_versions": {}
+}

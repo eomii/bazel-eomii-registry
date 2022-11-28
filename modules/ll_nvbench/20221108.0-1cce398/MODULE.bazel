@@ -1,0 +1,10 @@
+module(
+    name = "ll_nvbench",
+    version = "20221108.0-1cce398",
+    compatibility_level = 1,
+)
+
+bazel_dep(name="rules_ll", version="20221127.0")
+bazel_dep(name="ll_fmt", version="9.1.0")
+bazel_dep(name="ll_libcudacxx", version="20221122.0-e2d7c47")
+bazel_dep(name="ll_json", version="3.11.2")

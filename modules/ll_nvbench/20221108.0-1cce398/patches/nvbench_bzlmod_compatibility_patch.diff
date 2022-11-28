@@ -1,0 +1,102 @@
+diff --git a/BUILD.bazel b/BUILD.bazel
+new file mode 100644
+index 0000000..38193f9
+--- /dev/null
++++ b/BUILD.bazel
+@@ -0,0 +1,73 @@
++load("@rules_ll//ll:defs.bzl", "ll_library", "ll_binary")
++
++NVBENCH_COMPILE_FLAGS = [
++    "-std=c++17",
++    "--offload-arch=sm_61,sm_70",
++    "-U__FLOAT128__",
++    "-U__SIZEOF_FLOAT128__",
++    "-Xclang",
++    "-fcuda-allow-variadic-functions",
++]
++
++ll_library(
++    name = "nvbench",
++    srcs = [
++        "nvbench/axes_metadata.cxx",
++        "nvbench/axis_base.cxx",
++        "nvbench/benchmark_base.cxx",
++        "nvbench/benchmark_manager.cxx",
++        "nvbench/float64_axis.cxx",
++        "nvbench/int64_axis.cxx",
++        "nvbench/named_values.cxx",
++        "nvbench/printer_base.cxx",
++        "nvbench/printer_multiplex.cxx",
++        "nvbench/runner.cxx",
++        "nvbench/state.cxx",
++        "nvbench/string_axis.cxx",
++        "nvbench/type_axis.cxx",
++        "nvbench/type_strings.cxx",
++        "nvbench/detail/state_generator.cxx",
++
++        "nvbench/blocking_kernel.cu",
++        "nvbench/csv_printer.cu",
++        "nvbench/cuda_call.cu",
++        "nvbench/device_info.cu",
++        "nvbench/device_manager.cu",
++        "nvbench/markdown_printer.cu",
++        "nvbench/option_parser.cu",
++        "nvbench/detail/measure_cold.cu",
++        "nvbench/detail/measure_hot.cu",
++        "nvbench/json_printer.cu",
++
++        "nvbench/detail/measure_cupti.cu",
++        "nvbench/cupti_profiler.cxx",
++
++        "nvbench/main.cu",
++    ],
++    hdrs = glob([
++        "nvbench/internal/*.cuh",
++    ]),
++    exposed_hdrs = glob(
++        include = ["nvbench/**/*.cuh"],
++        exclude = [ "nvbench/internal/*.cuh"],
++    ),
++    relative_angled_includes = ["."],
++    exposed_relative_angled_includes = ["."],
++    compilation_mode = "cuda_nvidia",
++    visibility = ["//visibility:public"],
++    compile_flags = NVBENCH_COMPILE_FLAGS,
++    deps = [
++        "@ll_fmt//:fmt",
++        "@ll_libcudacxx//:libcudacxx",
++        "@ll_json//:json",
++    ],
++)
++
++ll_binary(
++    name = "nvbench-ctl",
++    srcs = ["exec/nvbench-ctl.cu"],
++    deps = [":nvbench"],
++    compile_flags = NVBENCH_COMPILE_FLAGS,
++    compilation_mode = "cuda_nvidia",
++    visibility = ["//visibility:public"],
++)
+diff --git a/MODULE.bazel b/MODULE.bazel
+new file mode 100644
+index 0000000..8e4a1ff
+--- /dev/null
++++ b/MODULE.bazel
+@@ -0,0 +1,10 @@
++module(
++    name = "ll_nvbench",
++    version = "20221108.0-1cce398",
++    compatibility_level = 1,
++)
++
++bazel_dep(name="rules_ll", version="20221127.0")
++bazel_dep(name="ll_fmt", version="9.1.0")
++bazel_dep(name="ll_libcudacxx", version="20221122.0-e2d7c47")
++bazel_dep(name="ll_json", version="3.11.2")
+diff --git a/WORKSPACE.bazel b/WORKSPACE.bazel
+new file mode 100644
+index 0000000..996cee9
+--- /dev/null
++++ b/WORKSPACE.bazel
+@@ -0,0 +1 @@
++# Empty.

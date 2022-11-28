@@ -1,0 +1,107 @@
+diff --git a/BUILD.bazel b/BUILD.bazel
+index 64f86ee..642c6ec 100644
+--- a/BUILD.bazel
++++ b/BUILD.bazel
+@@ -1,77 +1,30 @@
+-licenses(["notice"])
+-
+-config_setting(
+-    name = "qnx",
+-    constraint_values = ["@platforms//os:qnx"],
+-    values = {
+-        "cpu": "x64_qnx",
+-    },
+-    visibility = [":__subpackages__"],
+-)
++load("@rules_ll//ll:defs.bzl", "ll_library")
+ 
+-config_setting(
+-    name = "windows",
+-    constraint_values = ["@platforms//os:windows"],
+-    values = {
+-        "cpu": "x64_windows",
+-    },
+-    visibility = [":__subpackages__"],
+-)
+-
+-config_setting(
+-    name = "perfcounters",
+-    define_values = {
+-        "pfm": "1",
+-    },
+-    visibility = [":__subpackages__"],
+-)
++licenses(["notice"])
+ 
+-cc_library(
++ll_library(
+     name = "benchmark",
+     srcs = glob(
+-        [
+-            "src/*.cc",
+-            "src/*.h",
+-        ],
++        ["src/*.cc"],
+         exclude = ["src/benchmark_main.cc"],
+     ),
+-    hdrs = [
++    hdrs = glob(["src/*.h"]),
++    exposed_hdrs = [
+         "include/benchmark/benchmark.h",
+         "include/benchmark/export.h",
+     ],
+-    linkopts = select({
+-        ":windows": ["-DEFAULTLIB:shlwapi.lib"],
+-        "//conditions:default": ["-pthread"],
+-    }),
+-    strip_include_prefix = "include",
++    # linker_flags = ["-pthread"],
++    relative_angled_includes = ["include"],
++    exposed_relative_includes = ["include"],
+     visibility = ["//visibility:public"],
+-    # Only static linking is allowed; no .so will be produced.
+-    # Using `defines` (i.e. not `local_defines`) means that no
+-    # dependent rules need to bother about defining the macro.
+-    linkstatic = True,
+-    defines = [
+-        "BENCHMARK_STATIC_DEFINE",
+-    ] + select({
+-        ":perfcounters": ["HAVE_LIBPFM"],
+-        "//conditions:default": [],
+-    }),
+-    deps = select({
+-        ":perfcounters": ["@libpfm//:libpfm"],
+-        "//conditions:default": [],
+-    }),
++    defines = ["BENCHMARK_STATIC_DEFINE"],
+ )
+ 
+-cc_library(
++ll_library(
+     name = "benchmark_main",
+     srcs = ["src/benchmark_main.cc"],
+     hdrs = ["include/benchmark/benchmark.h", "include/benchmark/export.h"],
+-    strip_include_prefix = "include",
++    relative_includes = ["include"],
+     visibility = ["//visibility:public"],
+     deps = [":benchmark"],
+ )
+-
+-cc_library(
+-    name = "benchmark_internal_headers",
+-    hdrs = glob(["src/*.h"]),
+-    visibility = ["//test:__pkg__"],
+-)
+diff --git a/MODULE.bazel b/MODULE.bazel
+new file mode 100644
+index 0000000..b4574bd
+--- /dev/null
++++ b/MODULE.bazel
+@@ -0,0 +1,7 @@
++module(
++    name = "ll_benchmark",
++    version = "1.7.1",
++    compatibility_level = 1,
++)
++
++bazel_dep(name = "rules_ll", version = "20221105.0")

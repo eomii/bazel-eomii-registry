@@ -1,0 +1,11 @@
+{
+    "integrity": "sha256-9NDNdWB4CrPXfXKzKX0W2hR/A4+Fru0XtMQB3J5AHEc=",
+    "patch_strip": 1,
+    "patches": {
+        "nvbench_bzlmod_compatibility_patch.diff": "sha256-SD8zmbj+lbRihhZ31OSwi9Kl10iJ+K/RLXzMQana+3o=",
+        "nvbench_additional_files.diff": "sha256-9r6stNo5j+3ixN0ME8dmM9+zxztcKsp22qkKRimSQNo=",
+        "nvbench_cpp_fixes.diff": "sha256-VS4wmzAyLuQYeHKd5UDwWZhopiugfk2zUT0YhmlY9ic="
+    },
+    "strip_prefix": "nvbench-1cce3988e241d7f08f296a03f04c19df381043fd",
+    "url": "https://github.com/NVIDIA/nvbench/archive/1cce3988e241d7f08f296a03f04c19df381043fd.zip"
+}

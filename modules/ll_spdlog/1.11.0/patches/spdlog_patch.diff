@@ -1,0 +1,56 @@
+diff --git a/BUILD.bazel b/BUILD.bazel
+new file mode 100644
+index 00000000..ccf50db2
+--- /dev/null
++++ b/BUILD.bazel
+@@ -0,0 +1,34 @@
++load("@rules_ll//ll:defs.bzl", "ll_library")
++
++
++ll_library(
++    name = "spdlog",
++    srcs = [
++        "src/async.cpp",
++        "src/cfg.cpp",
++        "src/color_sinks.cpp",
++        "src/file_sinks.cpp",
++        "src/spdlog.cpp",
++        "src/stdout_sinks.cpp",
++    ],
++    compile_flags = [
++        "-std=c++20",
++    ],
++    exposed_relative_angled_includes = [
++        "include",
++    ],
++    exposed_defines = [
++        "SPDLOG_USE_STD_FORMAT",
++        "SPDLOG_COMPILED_LIB",
++    ],
++    exposed_hdrs = glob([
++        "include/spdlog/*.h",
++        "include/spdlog/details/*.h",
++        "include/spdlog/sinks/*.h",
++        "include/spdlog/fmt/*.h",
++        "include/spdlog/fmt/bundled/core.h",
++        "include/spdlog/fmt/bundled/format.h",
++        "include/spdlog/cfg/*.h",
++    ]),
++    visibility = ["//visibility:public"],
++)
+diff --git a/MODULE.bazel b/MODULE.bazel
+new file mode 100644
+index 00000000..c3055eb8
+--- /dev/null
++++ b/MODULE.bazel
+@@ -0,0 +1,3 @@
++module(name = "ll_spdlog", version = "1.11.0")
++
++bazel_dep(name = "rules_ll", version = "20221105.0")
+diff --git a/WORKSPACE.bazel b/WORKSPACE.bazel
+new file mode 100644
+index 00000000..5ffb6506
+--- /dev/null
++++ b/WORKSPACE.bazel
+@@ -0,0 +1 @@
++# Empty, but patches may break if there is no line here.

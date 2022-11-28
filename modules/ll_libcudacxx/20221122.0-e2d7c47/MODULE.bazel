@@ -1,0 +1,6 @@
+module(
+    name = "ll_libcudacxx",
+    version = "20221122.0-e2d7c47",
+)
+
+bazel_dep(name="rules_ll", version="20221119.0")

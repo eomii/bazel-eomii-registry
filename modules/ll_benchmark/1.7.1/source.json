@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-ruxSOBKE7DdSUFoiDTYJaVTIadpFc8Lh3zZC0vCkqsY=",
+    "patch_strip": 1,
+    "patches": {
+        "benchmark_bzlmod_compatibility_patch.diff": "sha256-tvRv3/iVZjpPIMlvY6qUNnsKXZBl6iaYk2Os2kSCkjM="
+    },
+    "strip_prefix": "benchmark-1.7.1",
+    "url": "https://github.com/google/benchmark/archive/refs/tags/v1.7.1.zip"
+}

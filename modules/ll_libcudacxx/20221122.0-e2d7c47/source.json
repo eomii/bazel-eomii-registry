@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-/DQ5ZaBygwsRqriDL67hM5kStGhogt2l9/va9eAzcgI=",
+    "patch_strip": 1,
+    "patches": {
+        "libcudacxx_bzlmod_compatibility_patch.diff": "sha256-CFM/HhCymACh1atS6qFoNsJqNVaXQjY+2xwn8LyYV0c="
+    },
+    "strip_prefix": "libcudacxx-e2d7c472200a4f0f39d55e3dcd42b80e915a053b",
+    "url": "https://github.com/NVIDIA/libcudacxx/archive/e2d7c472200a4f0f39d55e3dcd42b80e915a053b.zip"
+}

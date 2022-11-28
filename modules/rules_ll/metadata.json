@@ -1,0 +1,11 @@
+{
+    "homepage": "https://github.com/eomii/rules_ll",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "20221103.0",
+        "20221105.0",
+        "20221119.0",
+        "20221127.0"
+    ],
+    "yanked_versions": {}
+}
