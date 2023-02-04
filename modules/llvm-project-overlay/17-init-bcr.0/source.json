@@ -2,10 +2,11 @@
     "integrity": "sha256-Rcz99e6k5uqc53gz25gj4j4Tv52mCTOnAOHGkIMVyKI=",
     "patch_strip": 1,
     "patches": {
+        "rework_zlib.diff": "sha256-ehH4Gg19Q5uAL24W7yaL0LRbrjLqsiFBmxhRfNILFcU=",
         "bzlmod_compatibility_patch.patch": "sha256-ocs13+nspOSROvqEWFMAO3/rSAsJikOdrTtA3EgUcDM=",
-        "00_make_labels_explicit.patch": "sha256-akA9bBKpDE2kbSQinRErniUJoMgZBHnBiQQgf3UrV/E=",
+        "00_make_labels_explicit.patch": "sha256-IQ6cMbziYtLuAnTW6EbaR//SDJxBY3GjkPCJEaBDIzc=",
         "01_dynamically_determine_workspace_root.patch": "sha256-ojOw/kbnspA0b+uvlZr1FYLck/VmiN/ThMhBGr0G6Vs=",
-        "02_add_bzlmod_support.patch": "sha256-kJuZ49/3HJRfsf09kBcy9nxVXxZIr2mzBT1TvL+OFGA=",
+        "02_add_bzlmod_support.patch": "sha256-c7kes80ceZdR61oZYkz+KKpPD1mbcnbNUMQxlVQ1VkI=",
         "03_bzlmod_custom_commit_example.patch": "sha256-shqEf+GvvecduzlEAKJyMYlDDHCjr8UBVkDlH6PMk3o="
     },
     "strip_prefix": "llvm-project-llvmorg-17-init",

@@ -89,15 +89,14 @@ index 000000000000..996cee9ad835
 +# Empty.
 diff --git a/utils/bazel/extensions.bzl b/utils/bazel/extensions.bzl
 new file mode 100644
-index 000000000000..b7a8c580480e
+index 000000000..e23752b0a
 --- /dev/null
 +++ b/utils/bazel/extensions.bzl
-@@ -0,0 +1,131 @@
+@@ -0,0 +1,139 @@
 +load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 +load(":vulkan_sdk.bzl", "vulkan_sdk_setup")
 +load(":configure.bzl", "llvm_configure", "DEFAULT_TARGETS")
 +load(":terminfo.bzl", "llvm_terminfo_disable")
-+load(":zlib.bzl", "llvm_zlib_external")
 +
 +def _llvm_in_tree_sources_impl(repository_ctx):
 +    """Create a non-overlaid version of the llvm-project repository.
@@ -182,7 +181,16 @@ index 000000000000..b7a8c580480e
 +
 +    llvm_configure(name = "llvm-project", targets = targets)
 +
-+    llvm_zlib_external(name = "llvm_zlib", external_zlib = "@zlib")
++    http_archive(
++        name = "llvm_zlib",
++        build_file = "@llvm-raw//utils/bazel/third_party_build:zlib.BUILD",
++        sha256 = "b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30",
++        strip_prefix = "zlib-1.2.13",
++        urls = [
++            "https://storage.googleapis.com/mirror.tensorflow.org/zlib.net/zlib-1.2.13.tar.gz",
++            "https://zlib.net/zlib-1.2.13.tar.gz",
++        ],
++    )
 +
 +    llvm_terminfo_disable(name = "llvm_terminfo")
 +
