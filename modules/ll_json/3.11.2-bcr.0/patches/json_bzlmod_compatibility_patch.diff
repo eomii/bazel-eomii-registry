@@ -1,0 +1,34 @@
+diff --git a/BUILD.bazel b/BUILD.bazel
+new file mode 100644
+index 00000000..127409bc
+--- /dev/null
++++ b/BUILD.bazel
+@@ -0,0 +1,8 @@
++load("@rules_ll//ll:defs.bzl", "ll_library")
++
++ll_library(
++    name = "json",
++    exposed_hdrs = ["single_include/nlohmann/json.hpp"],
++    exposed_angled_includes = ["single_include"],
++    visibility = ["//visibility:public"],
++)
+diff --git a/MODULE.bazel b/MODULE.bazel
+new file mode 100644
+index 00000000..d297f6d4
+--- /dev/null
++++ b/MODULE.bazel
+@@ -0,0 +1,7 @@
++module(
++    name = "ll_json",
++    version = "3.11.2-bcr.0",
++    compatibility_level = 0,
++)
++
++bazel_dep(name = "rules_ll", version = "20230216.0")
+diff --git a/WORKSPACE.bazel b/WORKSPACE.bazel
+new file mode 100644
+index 00000000..b7db2541
+--- /dev/null
++++ b/WORKSPACE.bazel
+@@ -0,0 +1 @@
++# Empty.
