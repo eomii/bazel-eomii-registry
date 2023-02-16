@@ -2,7 +2,8 @@
     "homepage": "https://github.com/nlohmann/json",
     "maintainers": ["aaronmondal", "neqochan"],
     "versions": [
-        "3.11.2"
+        "3.11.2",
+        "3.11.2-bcr.0"
     ],
     "yanked_versions": {}
 }
