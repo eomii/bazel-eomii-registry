@@ -2,7 +2,8 @@
     "homepage": "https://github.com/gabime/spdlog",
     "maintainers": [],
     "versions": [
-       "1.11.0"
+       "1.11.0",
+       "1.11.0-bcr.0"
     ],
     "yanked_versions": {}
 }
