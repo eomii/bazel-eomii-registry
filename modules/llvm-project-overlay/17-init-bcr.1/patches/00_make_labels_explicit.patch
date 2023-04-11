@@ -1,0 +1,49 @@
+diff --git a/utils/bazel/configure.bzl b/utils/bazel/configure.bzl
+index 054e93016..bf152a011 100644
+--- a/utils/bazel/configure.bzl
++++ b/utils/bazel/configure.bzl
+@@ -34,7 +34,7 @@ DEFAULT_TARGETS = [
+ ]
+ 
+ def _overlay_directories(repository_ctx):
+-    src_path = repository_ctx.path(Label("//:WORKSPACE")).dirname
++    src_path = repository_ctx.path(Label("@llvm-raw//:WORKSPACE")).dirname
+     bazel_path = src_path.get_child("utils").get_child("bazel")
+     overlay_path = bazel_path.get_child("llvm-project-overlay")
+     script_path = bazel_path.get_child("overlay_directories.py")
+@@ -83,7 +83,7 @@ def _extract_cmake_settings(repository_ctx, llvm_cmake):
+ 
+     # It would be easier to use external commands like sed(1) and python.
+     # For portability, the parser should run on Starlark.
+-    llvm_cmake_path = repository_ctx.path(Label("//:" + llvm_cmake))
++    llvm_cmake_path = repository_ctx.path(Label("@llvm-raw//:" + llvm_cmake))
+     for line in repository_ctx.read(llvm_cmake_path).splitlines():
+         # Extract "set ( FOO bar ... "
+         setfoo = line.partition("(")
+diff --git a/utils/bazel/terminfo.bzl b/utils/bazel/terminfo.bzl
+index 70281e111..10c7f6e36 100644
+--- a/utils/bazel/terminfo.bzl
++++ b/utils/bazel/terminfo.bzl
+@@ -27,7 +27,7 @@ def _llvm_terminfo_disable_impl(repository_ctx):
+ 
+ _terminfo_disable_attrs = {
+     "_disable_build_template": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_disable.BUILD"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_disable.BUILD",
+         allow_single_file = True,
+     ),
+ }
+@@ -148,11 +148,11 @@ def _merge_attrs(attrs_list):
+ 
+ _terminfo_system_attrs = _merge_attrs([_terminfo_disable_attrs, {
+     "_system_build_template": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_system.BUILD"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_system.BUILD",
+         allow_single_file = True,
+     ),
+     "_terminfo_test_source": attr.label(
+-        default = Label("//utils/bazel/deps_impl:terminfo_test.c"),
++        default = "@llvm-raw//utils/bazel/deps_impl:terminfo_test.c",
+         allow_single_file = True,
+     ),
+     "candidate_system_linkopts": attr.string_list(
