@@ -1,0 +1,66 @@
+module(
+    name = "rules_ll",
+    version = "20230411.0",
+    compatibility_level = 0,
+)
+
+register_execution_platforms("@rules_ll//ll:ll_linux_exec_platform")
+register_toolchains("@rules_ll//ll:ll_toolchain")
+
+# Platform support.
+bazel_dep(name = "platforms", version = "0.0.6")
+
+# Various utility functions such as path manipulations and templating.
+bazel_dep(name = "bazel_skylib", version = "1.4.1")
+
+# Documentation.
+bazel_dep(name = "stardoc", version = "0.5.3")
+
+# The LLVM project. We override the specific commit below.
+bazel_dep(name = "llvm-project-overlay", version = "17-init-bcr.2")
+
+# Configure the llvm-project Bazel overlay.
+llvm_project_overlay = use_extension(
+    "@llvm-project-overlay//utils/bazel:extensions.bzl",
+    "llvm_project_overlay",
+)
+llvm_project_overlay.configure(
+    commit = "5e57f1bf52834cd5133011624c9bbc8cbf58c272",
+    sha256 = "9f9b4d5fb5b587dfb54d6e06ced8acca18cc3b29b005ffc2a745acb8aca8943d",
+    targets = ["AMDGPU", "NVPTX", "X86", "WebAssembly"],
+    patches = [
+        "@rules_ll//patches:back_inserter_patch.diff",
+        "@rules_ll//patches:compiler-rt_float128_patch.diff",
+        "@rules_ll//patches:mallinfo2_patch.diff",
+        "@rules_ll//patches:rules_ll_compatibility_patch.diff",
+        "@rules_ll//patches:rules_ll_overlay_patch.diff",
+        "@rules_ll//patches:clang_new_offload_driver.diff",
+        "@rules_ll//patches:llvm_use_zlib-ng.diff",
+    ],
+)
+
+use_repo(
+    llvm_project_overlay,
+    "llvm-project",
+    "llvm-raw",
+)
+
+# Set up dependencies for rules_ll.
+rules_ll_dependencies = use_extension(
+    "@rules_ll//ll:init.bzl",
+    "rules_ll_dependencies",
+)
+
+use_repo(
+    rules_ll_dependencies,
+    "zstd",
+    "zlib-ng",
+    "comgr",
+    "hip",
+    "hipamd",
+    "rocclr",
+    "rocm-device-libs",
+    "rocm-opencl-runtime",
+    "rocr",
+    "roct",
+)
