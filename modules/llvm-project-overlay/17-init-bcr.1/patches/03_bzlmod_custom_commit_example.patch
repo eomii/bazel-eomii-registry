@@ -1,0 +1,64 @@
+diff --git a/utils/bazel/examples/bzlmod_custom_commit/.bazelrc b/utils/bazel/examples/bzlmod_custom_commit/.bazelrc
+new file mode 100644
+index 000000000000..932208f2b22c
+--- /dev/null
++++ b/utils/bazel/examples/bzlmod_custom_commit/.bazelrc
+@@ -0,0 +1,5 @@
++common --repo_env=BAZEL_CXXOPTS='-std=c++17:-O3'
++common --experimental_enable_bzlmod
++
++# TODO(aaronmondal): Only for testing during review. Remove before merging this patch.
++common --registry=https://raw.githubusercontent.com/eomii/bazel-eomii-registry/llvm-project-overlay
+diff --git a/utils/bazel/examples/bzlmod_custom_commit/.bazelversion b/utils/bazel/examples/bzlmod_custom_commit/.bazelversion
+new file mode 100644
+index 000000000000..84197c89467d
+--- /dev/null
++++ b/utils/bazel/examples/bzlmod_custom_commit/.bazelversion
+@@ -0,0 +1 @@
++5.3.2
+diff --git a/utils/bazel/examples/bzlmod_custom_commit/MODULE.bazel b/utils/bazel/examples/bzlmod_custom_commit/MODULE.bazel
+new file mode 100644
+index 000000000000..a7d1fd72be61
+--- /dev/null
++++ b/utils/bazel/examples/bzlmod_custom_commit/MODULE.bazel
+@@ -0,0 +1,20 @@
++bazel_dep(name = "llvm-project-overlay", version = "17-init-bcr.0")
++
++llvm_project_overlay = use_extension(
++    "@llvm-project-overlay//utils/bazel:extensions.bzl",
++    "llvm_project_overlay",
++)
++
++# TODO(aaronmondal): After the other patches in the bzlmod patch series are
++# committed, update <custom_commit> and <some_hash> and submit this example.
++llvm_project_overlay.configure(
++    targets = ["X86"],  # Using a subset of Clang targets to reduce build times.
++    commit = "<custom_commit>",
++    sha256 = "<some_hash>",
++    patches = ["//:mallinfo2_patch.diff"],
++)
++
++use_repo(
++    llvm_project_overlay,
++    "llvm-project",
++)
+diff --git a/utils/bazel/examples/bzlmod_custom_commit/mallinfo2_patch.diff b/utils/bazel/examples/bzlmod_custom_commit/mallinfo2_patch.diff
+new file mode 100644
+index 000000000000..37cd326aba80
+--- /dev/null
++++ b/utils/bazel/examples/bzlmod_custom_commit/mallinfo2_patch.diff
+@@ -0,0 +1,13 @@
++diff --git a/utils/bazel/llvm-project-overlay/llvm/include/llvm/Config/config.h b/utils/bazel/llvm-project-overlay/llvm/include/llvm/Config/config.h
++index 45945510d..88c0afb66 100644
++--- a/utils/bazel/llvm-project-overlay/llvm/include/llvm/Config/config.h
+++++ b/utils/bazel/llvm-project-overlay/llvm/include/llvm/Config/config.h
++@@ -159,6 +159,9 @@
++ /* Define to 1 if you have the `mallinfo' function. */
++ /* HAVE_MALLINFO defined in Bazel */
++
+++/* Define to 1 if you have the `mallinfo2` function. */
+++#define HAVE_MALLINFO2 1
+++
++ /* Define to 1 if you have the <malloc/malloc.h> header file. */
++ /* HAVE_MALLOC_MALLOC_H defined in Bazel */
++
