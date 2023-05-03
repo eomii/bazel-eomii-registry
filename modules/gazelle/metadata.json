@@ -1,0 +1,17 @@
+{
+    "homepage": "https://github.com/bazelbuild/bazel-gazelle",
+    "maintainers": [
+        {
+            "email": "fabian@meumertzhe.im",
+            "github": "fmeum",
+            "name": "Fabian Meumertzheim"
+        }
+    ],
+    "repository": [
+        "github:bazelbuild/bazel-gazelle"
+    ],
+    "versions": [
+        "23226de"
+    ],
+    "yanked_versions": {}
+}
