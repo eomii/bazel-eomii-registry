@@ -1,0 +1,12 @@
+{
+    "integrity": "sha256-1RSuiBpU6VtCtsVezgSH5xvM9MVuUkHaY7l1N454KDE=",
+    "patch_strip": 1,
+    "patches": {
+        "llvm_use_zlib-ng.patch": "sha256-dV2bsQzobn7CzGeqRQgtcUiXC/Nbo0pXvXRNI4YtFgU=",
+        "bzlmod_compatibility_patch.patch": "sha256-OHGZxID64mn0tydMRL1RUpGi1AA4/+g49hWOkneZxd4=",
+        "00_add_bzlmod_support.patch": "sha256-fTZj0vcxoRS7MkVZCv+R/fLolInLBrp4Sp5uUqtgoQI=",
+        "01_bzlmod_custom_commit_example.patch": "sha256-shqEf+GvvecduzlEAKJyMYlDDHCjr8UBVkDlH6PMk3o="
+    },
+    "strip_prefix": "llvm-project-762c709911d3f4a9086239f226a6439a6bc8911c",
+    "url": "https://github.com/llvm/llvm-project/archive/762c709911d3f4a9086239f226a6439a6bc8911c.zip"
+}

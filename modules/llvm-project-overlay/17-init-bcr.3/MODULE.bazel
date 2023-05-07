@@ -1,0 +1,47 @@
+module(
+    name = "llvm-project-overlay",
+    version = "17-init-bcr.3",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.4.1")
+bazel_dep(name = "platforms", version = "0.0.6")
+bazel_dep(name = "rules_cc", version = "0.0.6")
+
+llvm_project_overlay = use_extension(
+    "@llvm-project-overlay//utils/bazel:extensions.bzl",
+    "llvm_project_overlay",
+)
+
+# This dependency is specific to rules_ll. It lets us use `ll_library` and
+# `ll_binary` for the rules_ll-specific overlays.
+bazel_dep(name = "rules_ll", version = "20230411.0")
+
+llvm_project_overlay.configure(
+    targets = [
+        "AArch64",
+        "AMDGPU",
+        "ARM",
+        "AVR",
+        "BPF",
+        "Hexagon",
+        "Lanai",
+        "Mips",
+        "MSP430",
+        "NVPTX",
+        "PowerPC",
+        "RISCV",
+        "Sparc",
+        "SystemZ",
+        "VE",
+        "WebAssembly",
+        "X86",
+        "XCore",
+    ],
+)
+
+use_repo(
+    llvm_project_overlay,
+    "llvm-project",
+    "llvm-raw",
+)
