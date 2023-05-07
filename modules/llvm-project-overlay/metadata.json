@@ -8,7 +8,11 @@
         }
     ],
     "versions": [
-        "16.0.0-bcr.0"
+        "16.0.0-bcr.0",
+        "17-init-bcr.0",
+        "17-init-bcr.1",
+        "17-init-bcr.2",
+        "17-init-bcr.3"
     ],
     "yanked_versions": {}
 }
