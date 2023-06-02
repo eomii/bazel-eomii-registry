@@ -1,0 +1,5 @@
+{
+    "integrity": "sha256-YwAueAaxYm2UdkwCDyFPEPYZIBj5R616jxDqCQAvjwA=",
+    "strip_prefix": "bazel-gazelle-7feffe17f56e2b76eae8a4f2933215d6c5924176",
+    "url": "https://github.com/bazelbuild/bazel-gazelle/archive/7feffe17f56e2b76eae8a4f2933215d6c5924176.zip"
+}
