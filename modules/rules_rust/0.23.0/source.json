@@ -1,0 +1,5 @@
+{
+    "integrity": "sha256-G1tsIjQZcAMmC1/f0F/nb7n0GsLaiGY3ByCekgk0qJM=",
+    "strip_prefix": "rules_rust-0.23.0",
+    "url": "https://github.com/bazelbuild/rules_rust/archive/refs/tags/0.23.0.zip"
+}
