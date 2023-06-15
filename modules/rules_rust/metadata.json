@@ -1,0 +1,8 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_rust",
+    "maintainers": ["aaronmondal", "neqochan"],
+    "versions": [
+        "0.23.0"
+    ],
+    "yanked_versions": {}
+}
